@@ -101,7 +101,9 @@ class SmartAnswerPresenter
     when SmartAnswer::Question::Salary
       SalaryQuestionPresenter
     when SmartAnswer::Question::Base
-      QuestionPresenter
+      QuestionPresenter         
+    when SmartAnswer::Group
+      GroupPresenter
     else NodePresenter
     end
     presenter_class.new(i18n_prefix, node, current_state)
@@ -145,5 +147,5 @@ class SmartAnswerPresenter
         responses << params[:response]
       end
     end
-  end
+  end  
 end

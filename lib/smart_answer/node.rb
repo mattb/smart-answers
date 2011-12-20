@@ -20,5 +20,9 @@ module SmartAnswer
     def is_outcome?
       false
     end
+    
+    def is_group?
+      false
+    end
   end
 end

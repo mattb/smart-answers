@@ -1,0 +1,4 @@
+<% question.nodes.each do |node| -%>  
+<h2><%= node.title %></h2>
+<%= render :partial => 'question', :locals => { question: node } %>
+<% end -%>
