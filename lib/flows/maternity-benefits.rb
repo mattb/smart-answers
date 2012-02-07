@@ -1,5 +1,7 @@
 satisfies_need 1660
-section "Family"
+section_slug "family"
+subsection_slug "maternity-and-paternity"
+status :published
 
 date_question :when_is_your_baby_due? do
   save_input_as :due_date

@@ -24,8 +24,8 @@ module SmartAnswer
       assert_equal "FLOW_TITLE", @presenter.title
     end
 
-    test "should have a section" do
-      assert_equal "SECTION", @presenter.section
+    test "section slug defined in flow file" do
+      assert_equal "sample", @presenter.section_slug
     end
 
     test "should have description" do
@@ -58,6 +58,16 @@ module SmartAnswer
       assert_match %r{NODE_1_HINT}, @presenter.text
       assert_match %r{NODE_2_HINT}, @presenter.text
       assert_match %r{NODE_3_HINT}, @presenter.text
+    end
+
+    test "should omit HTML" do
+      assert_no_match %r{<}, @presenter.text
+      assert_match %r{LINK TEXT}, @presenter.text
+    end
+
+    test "should decode HTML entities" do
+      assert_no_match %r{&rarr;}, @presenter.text
+      assert_match %r{→}, @presenter.text
     end
   end
 end

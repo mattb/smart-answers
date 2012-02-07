@@ -1,10 +1,12 @@
 source 'http://rubygems.org'
 source 'https://gems.gemfury.com/vo6ZrmjBQu5szyywDszE/'
 
+gem 'gds-warmup-controller'
+
 # passenger compatability
 group :passenger_compatibility do
   gem 'rack', '1.3.5'
-  gem 'rake'
+  gem 'rake', '0.9.2'
 end
 
 group :router do
@@ -16,7 +18,11 @@ gem 'rails-i18n'
 gem 'json'
 gem 'jquery-rails'
 gem 'plek', '~> 0.1'
-gem 'rummageable', :git => 'git@github.com:alphagov/rummageable.git'
+gem 'rummageable'
+gem 'aws-ses', :require => 'aws/ses'
+gem 'exception_notification'
+gem 'gds-api-adapters', '~> 0.0.30'
+gem 'htmlentities', '~> 4'
 
 group :development do
   gem 'ruby-debug19', :require => false

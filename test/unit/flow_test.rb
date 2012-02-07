@@ -87,12 +87,28 @@ class FlowTest < ActiveSupport::TestCase
     assert_equal 1337, s.need_id
   end
 
-  test "should have a section" do
+  test "should have a section slug" do
     s = SmartAnswer::Flow.new do
-      section "Family"
+      section_slug "family"
     end
 
-    assert_equal "Family", s.section
+    assert_equal "family", s.section_slug
+  end
+
+  test "should have a status" do
+    s = SmartAnswer::Flow.new do
+      status :published
+    end
+
+    assert_equal :published, s.status
+  end
+
+  test "should throw an exception if invalid status provided" do
+    assert_raise SmartAnswer::Flow::InvalidStatus do
+      s = SmartAnswer::Flow.new do
+        status :bin
+      end
+    end
   end
 
   context "sequence of two questions" do

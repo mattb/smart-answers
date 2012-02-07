@@ -9,10 +9,15 @@ module SmartAnswer
     attr_reader :value
 
     def initialize(raw_input)
-      if ! self.class.valid?(raw_input)
-        raise InvalidResponse, "Sorry, I couldn't understand that number. Please try again.", caller
+      if raw_input.is_a?(Numeric)
+        @value = BigDecimal.new(raw_input.to_s)
+      else
+        raw_input = raw_input.to_s.gsub(/,/,'').gsub(/\s/,'')
+        if ! self.class.valid?(raw_input)
+          raise InvalidResponse, "Sorry, I couldn't understand that number. Please try again.", caller
+        end
+        @value = BigDecimal.new(raw_input.to_s)
       end
-      @value = BigDecimal.new(raw_input.to_s)
     end
 
     def to_s

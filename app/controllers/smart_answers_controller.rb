@@ -18,9 +18,9 @@ class SmartAnswersController < ApplicationController
         }
       }
     end
-                                                   
+
     set_slimmer_headers(
-      section: @presenter.section, 
+      section: @presenter.section_slug,
       need_id: @presenter.need_id
     )
   end
@@ -53,7 +53,8 @@ private
       redirect_to action: :show,
         id: @name,
         started: 'y',
-        responses: @presenter.current_state.responses
+        responses: @presenter.current_state.responses,
+        protocol: (request.ssl? || Rails.env.production?) ? 'https' : 'http'
     end
   end
 

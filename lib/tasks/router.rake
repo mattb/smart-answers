@@ -18,13 +18,17 @@ namespace :router do
 
   task :register_routes => [ :router_environment, :environment ] do
     SmartAnswer::FlowRegistry.new.flows.map do |flow|
+      next unless flow.status == :published
       path = "/#{flow.name}"
       @logger.info "Registering #{path}"
       @router.routes.update application_id: "smartanswers", route_type: :prefix,
         incoming_path: path
       @router.routes.update application_id: "smartanswers", route_type: :prefix,
         incoming_path: "#{path}.json"
-    end
+    end                                                                                                                   
+    
+    @router.routes.update application_id: "smartanswers", route_type: :full, incoming_path: "/calculate-your-holiday-entitlement"
+    @router.routes.update application_id: "smartanswers", route_type: :full, incoming_path: "/calculate-your-holiday-entitlement.json"
   end
 
   desc "Register smartanswers application and routes with the router (run this task on server in cluster)"

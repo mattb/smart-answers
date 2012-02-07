@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= yield :title %> | www.gov.uk</title>
+    <title><%= yield :title %> | GOV.UK</title>
     <%= stylesheet_link_tag "smart-answers" %>
-    <%= javascript_include_tag "smart-answers", defer: true %>
-    <meta name="x-section-name" content="<%= yield :section_name %>" />
-    <meta name="x-section-link" content="<%= yield(:section_name).downcase %>" />
+    <%= javascript_include_tag "smart-answers", "holiday-pay", defer: true %>
+    <%= yield :section_meta_tags %>
     <%= yield :head %>
   </head>
-<body>
+<body class="citizen">
   <div id="wrapper" class="answer smart_answer">
     <%= yield %>
   </div>

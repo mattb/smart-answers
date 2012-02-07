@@ -3,7 +3,7 @@ require 'ostruct'
 module SmartAnswer
   class Flow
     attr_reader :nodes, :outcomes
-    attr_accessor :state, :need_id
+    attr_accessor :state, :status, :need_id
 
     def initialize(&block)
       @nodes = []
@@ -20,9 +20,23 @@ module SmartAnswer
       self.need_id = need_id
     end
 
-    def section(s=nil)
-      @section = s if s
-      @section
+    def status(s=nil)
+      if s
+        raise Flow::InvalidStatus unless [:published,:draft].include? s
+        @status = s
+      end
+
+      @status
+    end
+
+    def section_slug(s=nil)
+      @section_slug = s if s
+      @section_slug
+    end
+    
+    def subsection_slug(s=nil)
+      @subsection_slug = s if s
+      @subsection_slug
     end
 
     def group(name, options = {}, &block)
@@ -94,6 +108,8 @@ module SmartAnswer
     def normalize_responses(responses)
       process(responses).responses
     end
+
+    class InvalidStatus < StandardError; end
 
     private
       def add_node(node)            
