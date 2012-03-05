@@ -40,7 +40,7 @@ multiple_choice :adult_or_child_passport? do
 end
 
 outcome :contact_the_police do
-  delegate_places :'police-stations'
+  places :'example'
 end
 outcome :contact_the_embassy
 outcome :complete_LS01_form
