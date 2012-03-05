@@ -3,7 +3,7 @@ module SmartAnswer
     class NotFound < StandardError; end
 
     def initialize(load_path = nil)
-      @load_path = Pathname.new(load_path || Rails.root.join('lib', 'flows'))
+      @load_path = Pathname.new(load_path || ( Rails.env.test? ? Rails.root.join('test', 'fixtures') : Rails.root.join('lib', 'flows') ))
       preload_flows! if Rails.env.production?
     end
 

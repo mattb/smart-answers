@@ -7,5 +7,9 @@ module SmartAnswer
     def transition(*args)
       raise InvalidNode
     end
+
+    def places(slug)
+
+    end
   end
 end

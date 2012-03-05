@@ -3,8 +3,14 @@ require 'slimmer/test'
 require_relative 'test_helper'
 require 'capybara/rails'
 
+require 'gds_api/helpers'
+require 'gds_api/test_helpers/imminence'
+
 class ActionDispatch::IntegrationTest
   include Capybara::DSL
+
+  include GdsApi::Helpers
+  include GdsApi::TestHelpers::Imminence
 end
 
 class JavascriptIntegrationTest < ActionDispatch::IntegrationTest
