@@ -24,6 +24,7 @@ gem 'aws-ses', :require => 'aws/ses'
 gem 'exception_notification'
 gem 'gds-api-adapters', '~> 0.0.30'
 gem 'htmlentities', '~> 4'
+gem 'colorize'
 
 group :development do
   gem 'ruby-debug19', :require => false

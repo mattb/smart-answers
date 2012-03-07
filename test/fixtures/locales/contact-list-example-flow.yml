@@ -1,0 +1,7 @@
+en-GB:
+  flow:
+    contact-list-example-flow:
+      done:
+        title: Example Done!
+        body: |
+          +[contact_list]

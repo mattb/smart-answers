@@ -24,6 +24,17 @@ end
 country_select :which_country? do
   save_input_as :country
 
+  calculate :country_name do
+    country_list = YAML::load( File.open( Rails.root.join('lib', 'smart_answer', 'templates', 'countries.yml') ))
+    country_list.select {|c| c[:slug] == country }.first[:name]
+  end
+
+  calculate :embassies do
+    embassies = JSON.parse( File.read(Rails.root.join('lib','data','embassies.json')) )
+    raise SmartAnswer::InvalidResponse.new unless embassies[country]
+    embassies[country]
+  end
+
   next_node :contact_the_embassy
 end
 
@@ -40,7 +51,9 @@ multiple_choice :adult_or_child_passport? do
 end
 
 outcome :contact_the_police do
-  places 'police-stations'
+  places :'police-stations'
 end
-outcome :contact_the_embassy
+outcome :contact_the_embassy do
+  contact_list :embassies
+end
 outcome :complete_LS01_form

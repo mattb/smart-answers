@@ -31,5 +31,13 @@ module SmartAnswer
         false
       end
     end
+
+    def contact_list(symbol)
+      @contact_list = symbol
+    end
+
+    def contact_list_sym
+      @contact_list
+    end
   end
 end

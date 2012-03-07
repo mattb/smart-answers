@@ -17,6 +17,10 @@ module SmartAnswer
       def valid_option?(option)
         options.map{|v| v[:slug]}.include? (option.to_s)
       end
+
+      def to_response(input)
+        country_list[input]
+      end
     end
   end
 end
