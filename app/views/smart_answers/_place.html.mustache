@@ -1,0 +1,69 @@
+{{#options}}
+<li>
+
+  <div class="place group">
+
+    {{#latitude}}
+    <div class="map">
+      <a href="https://maps.google.com/maps?z=14&amp;ie=UTF8&amp;q={{latitude}}%2C{{longitude}}" title="Link to location in google maps">
+        <img src="https://maps.google.com/maps/api/staticmap?zoom=14&amp;size=200x200&amp;center={{latitude}}%2C{{longitude}}&amp;sensor=false&amp;markers=color%3Ablue%7C{{latitude}}%2C{{longitude}}" alt="map showing location of {{name}}, {{town}}">
+      </a>
+      <p><a href="https://maps.google.com/maps?z=14&amp;ie=UTF8&amp;q={{latitude}}%2C{{longitude}}">View map</a></p>
+    </div>
+    {{/latitude}}
+
+    <div class="information">
+      <div class="address vcard">
+        <div class="adr org fn">
+
+          <p class="adr">
+          {{#name}}
+            <span class="fn">{{name}}</span><span class="visuallyhidden">,</span>
+          {{/name}}
+
+          {{#address}}
+            <span class="street-address">{{address}}</span><span class="visuallyhidden">,</span>
+          {{/address}}
+
+          {{#town}}
+            <span class="locality">{{town}}</span><span class="visuallyhidden">,</span>
+          {{/town}}
+
+          {{#postcode}}
+            <span class="postal-code">{{postcode}}</span>
+          {{/postcode}}
+          </p>
+
+          <div class="additional-information">
+            {{#url}}
+            <p class="url">
+              Website: <a href="{{url}}">{{text}}</a>
+            </p>
+            {{/url}}
+
+            {{#phone}}
+            <p>
+              Phone: <a class="tel" href="tel://{{phone}}">{{phone}}</a>
+            </p>
+            {{/phone}}
+
+            {{#fax}}
+            <p>
+              Fax: <a class="tel" href="tel://{{fax}}">{{fax}}</a>
+            </p>
+            {{/fax}}
+
+            {{#text_phone}}
+            <p>
+              Text Phone: <a class="tel" href="tel://{{text_phone}}">{{text_phone}}</a>
+            </p>
+            {{/text_phone}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</li>
+{{/options}}

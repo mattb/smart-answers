@@ -1,10 +1,14 @@
 class NodePresenter
   include ActionView::Helpers::NumberHelper
 
-  def initialize(i18n_prefix, node, state = nil)
+  def initialize(i18n_prefix, node, state = nil, req = {})
     @i18n_prefix = i18n_prefix
     @node = node
     @state = state || SmartAnswer::State.new(nil)
+
+    @request = req[:request]
+    @params = req[:params] || { }
+    @geostack = @request.env['HTTP_X_GOVGEO_STACK'] if @request.present?
   end
 
   def translate!(subkey)

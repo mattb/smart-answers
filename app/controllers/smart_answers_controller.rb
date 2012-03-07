@@ -16,7 +16,8 @@ class SmartAnswersController < ApplicationController
         render :json => {
           url: smart_answer_path(params[:id], 'y', @presenter.current_state.responses),
           html_fragment: html_fragment,
-          title: @presenter.current_node.title
+          title: @presenter.current_node.title,
+          places: ( @presenter.current_node.is_outcome? ? @presenter.current_node.locations : [] )
         }
       }
     end

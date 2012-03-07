@@ -17,6 +17,7 @@ gem 'rails', '3.1.3'
 gem 'rails-i18n'
 gem 'json'
 gem 'jquery-rails'
+gem 'mustache'
 gem 'plek', '~> 0.1'
 gem 'rummageable'
 gem 'aws-ses', :require => 'aws/ses'
@@ -38,6 +39,14 @@ if ENV['GOVSPEAK_DEV']
   gem 'govspeak', :path => '../govspeak'
 else
   gem 'govspeak', :git => 'git@github.com:alphagov/govspeak.git'
+end
+
+if ENV['GEO_DEV']
+  gem 'rack-geo', :path => '../rack-geo'
+  gem 'geogov', :path => '../geogov'
+else
+  gem 'rack-geo', '~> 0.8.1'
+  gem 'geogov', '~> 0.0.9'
 end
 
 group :test do

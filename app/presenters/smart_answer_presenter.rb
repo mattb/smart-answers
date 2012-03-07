@@ -108,9 +108,11 @@ class SmartAnswerPresenter
       SalaryQuestionPresenter
     when SmartAnswer::Question::Base
       QuestionPresenter
+    when SmartAnswer::Outcome
+      OutcomePresenter
     else NodePresenter
     end
-    presenter_class.new(i18n_prefix, node, current_state)
+    presenter_class.new(i18n_prefix, node, current_state, :request => request, :params => params)
   end
 
   def current_question_number
@@ -118,7 +120,7 @@ class SmartAnswerPresenter
   end
 
   def current_node
-    presenter_for(@flow.node(current_state.current_node))
+    @node_presenter ||= presenter_for(@flow.node(current_state.current_node))
   end
 
   def change_collapsed_question_link(question_number)

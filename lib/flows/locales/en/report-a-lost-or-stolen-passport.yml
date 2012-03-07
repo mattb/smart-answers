@@ -5,3 +5,9 @@ en-GB:
       where_was_your_passport_stolen?:
         options:
           in_the_uk: "in the UK"
+      contact_the_police:
+        title: You must contact the police and report your passport as stolen.
+        body: | 
+          Enter your postcode below to find your nearest police station.
+
+          +[location_form]

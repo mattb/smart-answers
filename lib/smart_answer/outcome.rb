@@ -1,5 +1,11 @@
+require 'gds_api/helpers'
+
 module SmartAnswer
   class Outcome < Node
+    include GdsApi::Helpers
+
+    attr_accessor :locations
+    
     def is_outcome?
       true
     end
@@ -8,8 +14,22 @@ module SmartAnswer
       raise InvalidNode
     end
 
-    def places(slug)
+    def places(slug, options = {})
+      @imminence_slug = slug
+      @limit = options[:limit] || 3
+    end
 
+    def load_places(geostack)
+      @locations ||= places_from_imminence(geostack)
+    end
+
+    def places_from_imminence(geostack = {})
+      if @imminence_slug and geostack
+        geostack = geostack.symbolize_keys
+        imminence_api.places(@imminence_slug, geostack[:fuzzy_point]['lat'], geostack[:fuzzy_point]['lon'], @limit)
+      else
+        false
+      end
     end
   end
 end

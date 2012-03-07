@@ -1,3 +1,5 @@
+var load_places;
+
 function browserSupportsHtml5HistoryApi() {
   return !! (history && history.replaceState && history.pushState);
 };
@@ -57,6 +59,7 @@ $(document).ready(function() {
     $.get(toJsonUrl(url), params, function(data) {
       addToHistory(data);
       updateContent(data['html_fragment']);
+      updatePlaces();
     });
   };
 
@@ -85,5 +88,64 @@ $(document).ready(function() {
     };
     history.replaceState(data, data['title'], data['url']);
   };
+});
 
+
+/*
+ * AlphaGeoForm
+ */
+
+var initialize_places = function() {
+  var form = new AlphaGeoForm('#local-locator-form');
+
+  var load_new_locations = function() {
+    $('#places-loading').removeClass('hidden');
+    $.ajax({
+      url: document.location + '.json',
+      dataType: 'json',
+      data: {
+        lat: AlphaGeo.full_location.current_location.lat,
+        lon: AlphaGeo.full_location.current_location.lon
+      },
+      type: 'POST',
+      success: function (data) {
+        $('#places-loading').addClass('hidden');
+
+        if (data.places.length > 0) {
+          $('h3#places-header').show().removeClass('hidden');
+          $('#place_list').html($.mustache($('#place-template').html(), {options: data.places}));
+        } else {
+          $('#results-error').removeClass('hidden').find('p').text('Sorry, no results were found near you.');
+        }
+        $('#places-header').show();
+      }
+    });
+  }
+
+  var remove_existing_location_data = function() {
+    $("#place_list").html('');
+    $('#places-header').hide();
+    $('#results-error').addClass('hidden');
+  }
+
+  $(AlphaGeo).bind('location-removed', function(e, message) {
+    remove_existing_location_data();
+  });
+
+  $(AlphaGeo).bind('location-completed', function(e, location) {
+    remove_existing_location_data();
+    $('strong.locality_placeholder').text(AlphaGeo.full_location.current_location.locality);
+    load_new_locations();
+  });
+}
+
+var updatePlaces = function() {
+  if (load_places == true) {
+    initialize_places();
+    AlphaGeo.notify();
+  }
+}
+
+$( function() {
+  updatePlaces();
 });
