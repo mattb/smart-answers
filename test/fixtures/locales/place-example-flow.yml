@@ -1,0 +1,7 @@
+en-GB:
+  flow:
+    place-example-flow:
+      done:
+        title: Example Done!
+        body: |
+          +[location_form]

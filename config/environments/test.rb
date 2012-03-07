@@ -41,4 +41,8 @@ SmartAnswers::Application.configure do
   config.assets.allow_debugging = true
 
   config.middleware.use Slimmer::App, :asset_host => "http://static.preview.alphagov.co.uk"
+
+  # Load the fixture locale files in the test environment
+  config.i18n.load_path += Dir[Rails.root.join(*%w{test fixtures locales *.{rb,yml}}).to_s]
+
 end

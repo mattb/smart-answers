@@ -7,4 +7,8 @@ require 'rails/test_help'
 require 'minitest/unit'
 require 'minitest/autorun'
 
+require 'webmock/test_unit'
+
+WebMock.disable_net_connect!(:allow_localhost => true)
+
 require 'mocha'

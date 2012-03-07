@@ -6,5 +6,5 @@ multiple_choice :question_example do
 end
 
 outcome :done do
-  places :'example'
+  places 'example', :limit => 5
 end

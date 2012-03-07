@@ -3,13 +3,20 @@ module SmartAnswer
     class NotFound < StandardError; end
 
     def initialize(load_path = nil)
-      @load_path = Pathname.new(load_path || ( Rails.env.test? ? Rails.root.join('test', 'fixtures') : Rails.root.join('lib', 'flows') ))
+      @load_paths = !load_path.nil? ? [Pathname.new(load_path)] : [Pathname.new(Rails.root.join('lib','flows'))]
+      @load_paths << Pathname.new(Rails.root.join('test', 'fixtures')) if Rails.env.test?
+
       preload_flows! if Rails.env.production?
     end
 
     def find(name)
       raise NotFound unless available?(name)
-      absolute_path = @load_path.join("#{name}.rb").to_s
+
+      absolute_path = @load_paths.map do |load_path|
+        absolute_path = load_path.join("#{name}.rb").to_s
+        File.exists?(absolute_path) ? absolute_path : nil
+      end.compact.first
+
       preloaded(name) || Flow.new do
         eval(File.read(absolute_path), binding, absolute_path)
         name(name)
@@ -21,9 +28,11 @@ module SmartAnswer
     end
 
     def available_flows
-      Dir[@load_path.join('*.rb')].map do |path|
-        File.basename(path).gsub(/\.rb$/, '')
-      end
+      @load_paths.map do |load_path| 
+        Dir[load_path.join('*.rb')].map do |path|
+          File.basename(path).gsub(/\.rb$/, '')
+        end
+      end.flatten
     end
 
     def flows
