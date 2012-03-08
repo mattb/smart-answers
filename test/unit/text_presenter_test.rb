@@ -11,7 +11,7 @@ module SmartAnswer
       I18n.config.load_path.unshift example_translation_file
       I18n.reload!
       registry = FlowRegistry.new(File.expand_path('../../fixtures/', __FILE__))
-      flow = registry.flows.first
+      flow = registry.find('flow_sample')
       @presenter = TextPresenter.new(flow)
     end
 

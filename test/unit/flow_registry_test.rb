@@ -26,7 +26,7 @@ module SmartAnswer
       flows = @registry.flows
       assert_kind_of Enumerable, flows
       assert_kind_of Flow, flows.first
-      assert_equal "flow_sample", flows.first.name
+      assert_equal "flow_sample", @registry.find('flow_sample').name
     end
   end
 end
