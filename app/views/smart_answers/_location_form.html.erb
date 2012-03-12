@@ -18,7 +18,7 @@
   </fieldset>
 </form>
 
-<section class="places">
+<section class="places answer_locations">
   <% if @places.any? %>
     <h3 id="places-header">Results near <strong><%= geo_friendly_name(@geostack) if geo_known_to_at_least?('ward', @geostack) %></strong>:</h3>
     <ol id="place_list" class="places">
@@ -33,7 +33,7 @@
     <ol id="place_list" class="places">
     </ol>
   <% end %>
-</div>
+</section>
 
 <script id="place-template" type="text/x-mustache-template">
 <%= mustache_direct '_place.html' %>
