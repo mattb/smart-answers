@@ -5,8 +5,8 @@ module SmartAnswer
     include GdsApi::Helpers
 
     attr_accessor :locations
-    
-    def is_outcome?
+
+    def outcome?
       true
     end
 
