@@ -33,6 +33,8 @@ multiple_choice :worked_for_same_employer? do
 
   calculate :holiday_entitlement_days do
     if responses.last == 'same-employer'
+      # This is calculated as a flat number based on the days you work
+      # per week
       if !days_worked_per_week.nil?
         if days_worked_per_week > 6
           38
