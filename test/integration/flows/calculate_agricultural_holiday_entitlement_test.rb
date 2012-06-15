@@ -109,4 +109,48 @@ class CalculateAgriculturalHolidayEntitlementTest < ActionDispatch::IntegrationT
       end
     end
   end
+
+  context "different number of days each week" do
+    setup do
+      add_response "different-number-of-days"
+    end
+
+    should "be able to enter the number of days I've worked" do
+      assert_current_node :how_many_total_days?
+    end
+
+    context "100 days worked" do
+      setup do
+        add_response "100"
+      end
+
+      should "be asked when my holiday starts" do
+        assert_current_node :what_date_does_holiday_start?
+      end
+
+      context "My holiday date is new year's day" do
+        setup do
+          add_response "2012-01-01"
+        end
+
+        should "be asked about my employer after holiday dates" do
+          assert_current_node :worked_for_same_employer?
+        end
+
+        context "Worked for the same employer" do
+          setup do
+            add_response "same-employer"
+          end
+
+          should "be finished" do
+            assert_current_node :done
+          end
+
+          should "be told my allowance" do
+            assert_state_variable :holiday_entitlement_days, 5
+          end
+        end
+      end
+    end
+  end
 end
