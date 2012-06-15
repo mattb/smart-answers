@@ -29,7 +29,7 @@ end
 
 multiple_choice :worked_for_same_employer? do
   option "same-employer" => :done
-  option "multiple-employers" => :how_many_total_days?
+  option "multiple-employers" => :how_many_weeks_at_current_employer?
 
   calculate :holiday_entitlement_days do
     if responses.last == 'same-employer'
@@ -61,6 +61,11 @@ end
 value_question :how_many_total_days? do
   save_input_as :total_days_worked
   next_node :what_date_does_holiday_start?
+end
+
+value_question :how_many_weeks_at_current_employer? do
+  save_input_as :total_weeks_worked
+  next_node :done
 end
 
 date_question :what_date_does_holiday_start? do

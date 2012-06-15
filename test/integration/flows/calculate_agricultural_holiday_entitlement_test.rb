@@ -39,7 +39,7 @@ class CalculateAgriculturalHolidayEntitlementTest < ActionDispatch::IntegrationT
 
       should "ask for number of days worked" do
         add_response "multiple-employers"
-        assert_current_node :how_many_total_days?
+        assert_current_node :how_many_weeks_at_current_employer?
       end
     end
 
@@ -148,6 +148,16 @@ class CalculateAgriculturalHolidayEntitlementTest < ActionDispatch::IntegrationT
 
           should "be told my allowance" do
             assert_state_variable :holiday_entitlement_days, 5
+          end
+        end
+
+        context "Worked for multiple employers" do
+          setup do
+            add_response "multiple-employers"
+          end
+
+          should "be asked how many weeks I've worked for this employer" do
+            assert_current_node :how_many_weeks_at_current_employer?
           end
         end
       end
