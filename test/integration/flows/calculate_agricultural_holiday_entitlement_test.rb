@@ -42,5 +42,71 @@ class CalculateAgriculturalHolidayEntitlementTest < ActionDispatch::IntegrationT
         assert_current_node :how_many_total_days?
       end
     end
+
+    context "5 to 6 days" do
+      setup do
+        add_response "5-to-6-days"
+      end
+
+      should "show outcome of holidays" do
+        add_response "same-employer"
+        assert_state_variable :holiday_entitlement_days, 35
+      end
+    end
+
+    context "4 to 5 days" do
+      setup do
+        add_response "4-to-5-days"
+      end
+
+      should "show outcome of holidays" do
+        add_response "same-employer"
+        assert_state_variable :holiday_entitlement_days, 31
+      end
+    end
+
+    context "3 to 4 days" do
+      setup do
+        add_response "3-to-4-days"
+      end
+
+      should "show outcome of holidays" do
+        add_response "same-employer"
+        assert_state_variable :holiday_entitlement_days, 25
+      end
+    end
+
+    context "2 to 3 days" do
+      setup do
+        add_response "2-to-3-days"
+      end
+
+      should "show outcome of holidays" do
+        add_response "same-employer"
+        assert_state_variable :holiday_entitlement_days, 20
+      end
+    end
+
+    context "1 to 2 days" do
+      setup do
+        add_response "1-to-2-days"
+      end
+
+      should "show outcome of holidays" do
+        add_response "same-employer"
+        assert_state_variable :holiday_entitlement_days, 13
+      end
+    end
+
+    context "1 or less days" do
+      setup do
+        add_response "up-to-1-day"
+      end
+
+      should "show outcome of holidays" do
+        add_response "same-employer"
+        assert_state_variable :holiday_entitlement_days, 7.5
+      end
+    end
   end
 end
