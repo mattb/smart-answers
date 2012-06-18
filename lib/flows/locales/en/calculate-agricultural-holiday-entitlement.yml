@@ -30,6 +30,10 @@ en-GB:
                     "same-employer": "Yes"
                     "multiple-employers": "No"
 
+            how_many_weeks_at_current_employer?:
+                title: How many weeks have you been at your current employer?
+                label: Weeks worked at current employer
+
             how_many_total_days?:
                 title: How many days have you worked since October 1?
                 hint: |

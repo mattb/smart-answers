@@ -67,7 +67,12 @@ value_question :how_many_total_days? do
   end
 
   calculate :holiday_entitlement_days do
-    calculator.holiday_days total_days_worked.to_f / weeks_until_october_1.to_f
+    if total_weeks_worked.nil?
+      calculator.holiday_days total_days_worked.to_f / weeks_until_october_1.to_f
+    else
+      days = calculator.holiday_days total_days_worked.to_f / weeks_until_october_1.to_f
+      sprintf("%.1f", days * (total_weeks_worked.to_i / 52.0))
+    end
   end
 
   next_node :done
