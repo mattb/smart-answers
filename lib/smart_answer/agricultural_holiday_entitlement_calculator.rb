@@ -16,14 +16,12 @@ module SmartAnswer
     end
 
     def weeks_worked(holiday_start)
-      seconds = holiday_start.to_datetime.to_i - calculation_period.to_datetime.to_i
-      days = (seconds / 3600) / 24
+      days = (holiday_start.to_datetime - calculation_period.to_datetime).to_i
       days / 7
     end
 
     def available_days
-      seconds = Date.today.to_datetime.to_i - calculation_period.to_datetime.to_i
-      (seconds / 3600) / 24
+      (Date.today.to_datetime - calculation_period.to_datetime).to_i
     end
 
     def holiday_days(days_worked_per_week)
