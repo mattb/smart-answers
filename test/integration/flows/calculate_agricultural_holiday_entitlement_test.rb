@@ -31,15 +31,45 @@ class CalculateAgriculturalHolidayEntitlementTest < ActionDispatch::IntegrationT
         assert_current_node :worked_for_same_employer?
       end
 
-      should "show outcome for only one employer" do
-        add_response 'same-employer'
-        assert_current_node :done
-        assert_state_variable :holiday_entitlement_days, 38
+      context "only one employer" do
+        setup do
+          add_response "same-employer"
+        end
+
+        should "be finished" do
+          assert_current_node :done
+        end
+
+        should "have 38 days holiday" do
+          assert_state_variable :holiday_entitlement_days, 38
+        end
+
       end
 
-      should "ask for number of days worked" do
-        add_response "multiple-employers"
-        assert_current_node :how_many_weeks_at_current_employer?
+      context "several employers" do
+        setup do
+          add_response "multiple-employers"
+        end
+
+        should "be asked how many weeks I've worked there" do
+          assert_current_node :how_many_weeks_at_current_employer?
+        end
+
+        context "worked 13 weeks" do
+          setup do
+            add_response "13"
+          end
+
+          should "be finished" do
+            assert_current_node :done
+          end
+
+          should "show outcome of holidays" do
+            # this should be exactly a quarter of the normal outcome
+            # which is 38.
+            assert_state_variable :holiday_entitlement_days, "9.5"
+          end
+        end
       end
     end
 
@@ -126,21 +156,35 @@ class CalculateAgriculturalHolidayEntitlementTest < ActionDispatch::IntegrationT
         add_response "2012-08-01"
       end
 
-      should "be asked if I worked for the same employer" do
-        assert_current_node :worked_for_same_employer?
+      should "be asked how many days I've worked" do
+        assert_current_node :how_many_total_days?
       end
 
       should "have the number of weeks calculated" do
         assert_state_variable :weeks_from_october_1, 43
       end
 
-      context "worked for the same employer" do
+      context "worked 50 days" do
         setup do
-          add_response "same-employer"
+          add_response "50"
         end
 
-        should "be asked how many days I've worked" do
-          assert_current_node :how_many_total_days?
+        should "be asked if I worked for the same employer" do
+          assert_current_node :worked_for_same_employer?
+        end
+
+        context "worked for the same employer" do
+          setup do
+            add_response "same-employer"
+          end
+
+          should "be finished" do
+            assert_current_node :done
+          end
+
+          should "have some holidays" do
+            assert_state_variable :holiday_entitlement_days, 13
+          end
         end
       end
     end

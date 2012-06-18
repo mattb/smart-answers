@@ -38,11 +38,11 @@ date_question :what_date_does_holiday_start? do
     calculator.weeks_worked(responses.last)
   end
 
-  next_node :worked_for_same_employer?
+  next_node :how_many_total_days?
 end
 
 multiple_choice :worked_for_same_employer? do
-  option "same-employer" => :how_many_total_days?
+  option "same-employer" => :done
   option "multiple-employers" => :how_many_weeks_at_current_employer?
 
   calculate :holiday_entitlement_days do
@@ -51,6 +51,8 @@ multiple_choice :worked_for_same_employer? do
       # per week
       if !days_worked_per_week.nil?
         calculator.holiday_days(days_worked_per_week)
+      elsif !weeks_from_october_1.nil?
+        calculator.holiday_days total_days_worked.to_f / weeks_from_october_1.to_f
       end
     else
       nil
@@ -66,21 +68,20 @@ value_question :how_many_total_days? do
     responses.last
   end
 
-  calculate :holiday_entitlement_days do
-    if total_weeks_worked.nil?
-      calculator.holiday_days total_days_worked.to_f / weeks_from_october_1.to_f
-    else
-      days = calculator.holiday_days total_days_worked.to_f / weeks_from_october_1.to_f
-      sprintf("%.1f", days * (total_weeks_worked.to_i / 52.0))
-    end
-  end
-
-  next_node :done
+  next_node :worked_for_same_employer?
 end
 
 value_question :how_many_weeks_at_current_employer? do
-  save_input_as :total_weeks_worked
-  next_node :how_many_total_days?
+  next_node :done
+
+  calculate :holiday_entitlement_days do
+    if !days_worked_per_week.nil?
+      days = calculator.holiday_days(days_worked_per_week)
+    elsif !weeks_from_october_1.nil?
+      days = calculator.holiday_days total_days_worked.to_f / weeks_from_october_1.to_f
+    end
+    sprintf("%.1f", days * (responses.last.to_i / 52.0))
+  end
 end
 
 outcome :done
