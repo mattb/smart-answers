@@ -41,4 +41,4 @@ en-GB:
                 label: Total days worked
 
             done:
-                title: Your statutory holiday entitlement is %{holiday_entitlement_days} days
+                title: Your statutory holiday entitlement is %{holiday_entitlement_days} days.
