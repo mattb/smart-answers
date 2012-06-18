@@ -1,11 +1,13 @@
 status :draft
 section_slug "work"
 
+calculator = AgriculturalHolidayEntitlementCalculator.new()
+
 # https://www.pivotaltracker.com/story/show/31084569
 
 multiple_choice :work_the_same_number_of_days_each_week? do
   option "same-number-of-days" => :how_many_days_per_week?
-  option "different-number-of-days" => :how_many_total_days?
+  option "different-number-of-days" => :what_date_does_holiday_start?
 end
 
 multiple_choice :how_many_days_per_week? do
@@ -27,8 +29,20 @@ multiple_choice :how_many_days_per_week? do
   next_node :worked_for_same_employer?
 end
 
+date_question :what_date_does_holiday_start? do
+  from { Date.civil(Date.today.year, 1, 1) }
+  to { Date.civil(Date.today.year, 12, 31) }
+  save_input_as :holiday_start_date
+
+  calculate :weeks_until_october_1 do
+    calculator.weeks_worked(responses.last)
+  end
+
+  next_node :worked_for_same_employer?
+end
+
 multiple_choice :worked_for_same_employer? do
-  option "same-employer" => :done
+  option "same-employer" => :how_many_total_days?
   option "multiple-employers" => :how_many_weeks_at_current_employer?
 
   calculate :holiday_entitlement_days do
@@ -36,21 +50,7 @@ multiple_choice :worked_for_same_employer? do
       # This is calculated as a flat number based on the days you work
       # per week
       if !days_worked_per_week.nil?
-        if days_worked_per_week > 6
-          38
-        elsif days_worked_per_week <= 6 && days_worked_per_week > 5
-          35
-        elsif days_worked_per_week <= 5 && days_worked_per_week > 4
-          31
-        elsif days_worked_per_week <= 4 && days_worked_per_week > 3
-          25
-        elsif days_worked_per_week <= 3 && days_worked_per_week > 2
-          20
-        elsif days_worked_per_week <= 2 && days_worked_per_week > 1
-          13
-        else
-          7.5
-        end
+        calculator.holiday_days(days_worked_per_week)
       end
     else
       nil
@@ -59,24 +59,23 @@ multiple_choice :worked_for_same_employer? do
 end
 
 value_question :how_many_total_days? do
-  save_input_as :total_days_worked
-  next_node :what_date_does_holiday_start?
+  calculate :total_days_worked do
+    if responses.last.to_i > calculator.available_days
+      raise SmartAnswer::InvalidResponse, "Please enter a valid number of days (max: #{calculator.available_days})"
+    end
+    responses.last
+  end
+
+  calculate :holiday_entitlement_days do
+    calculator.holiday_days total_days_worked.to_f / weeks_until_october_1.to_f
+  end
+
+  next_node :done
 end
 
 value_question :how_many_weeks_at_current_employer? do
   save_input_as :total_weeks_worked
-  next_node :done
-end
-
-date_question :what_date_does_holiday_start? do
-  from { Date.civil(Date.today.year, 1, 1) }
-  to { Date.civil(Date.today.year, 12, 31) }
-  save_input_as :holiday_start_date
-
-  calculate :weeks_until_october_1 do
-  end
-
-  next_node :worked_for_same_employer?
+  next_node :how_many_total_days?
 end
 
 outcome :done

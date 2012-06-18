@@ -21,6 +21,9 @@ en-GB:
                     "1-to-2-days": More than 1 but not more than 2
                     "up-to-1-day": 1 or less
 
+            what_date_does_holiday_start?:
+                title: What date does your holiday start?
+
             worked_for_same_employer?:
                 title: Have you worked for the same employer for a full year?
                 options:
@@ -30,5 +33,8 @@ en-GB:
             how_many_total_days?:
                 title: How many days have you worked since October 1?
                 hint: |
-                    Take into account: annual leave, statutory ordinary adoption leave, statutory ordinary maternity leave, statutory ordinary paternity leave, and sick leave (paid or unpaid).
+                    You should include days at work as well as days of annual leave, statutory ordinary adoption leave, statutory ordinary maternity leave, statutory ordinary paternity leave, and sick leave (paid or unpaid).
                 label: Total days worked
+
+            done:
+                title: Your statutory holiday entitlement is %{holiday_entitlement_days} days
