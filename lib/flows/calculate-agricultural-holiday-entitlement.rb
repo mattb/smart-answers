@@ -34,7 +34,7 @@ date_question :what_date_does_holiday_start? do
   to { Date.civil(Date.today.year, 12, 31) }
   save_input_as :holiday_start_date
 
-  calculate :weeks_until_october_1 do
+  calculate :weeks_from_october_1 do
     calculator.weeks_worked(responses.last)
   end
 
@@ -68,9 +68,9 @@ value_question :how_many_total_days? do
 
   calculate :holiday_entitlement_days do
     if total_weeks_worked.nil?
-      calculator.holiday_days total_days_worked.to_f / weeks_until_october_1.to_f
+      calculator.holiday_days total_days_worked.to_f / weeks_from_october_1.to_f
     else
-      days = calculator.holiday_days total_days_worked.to_f / weeks_until_october_1.to_f
+      days = calculator.holiday_days total_days_worked.to_f / weeks_from_october_1.to_f
       sprintf("%.1f", days * (total_weeks_worked.to_i / 52.0))
     end
   end
