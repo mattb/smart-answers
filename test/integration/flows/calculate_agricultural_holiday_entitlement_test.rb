@@ -115,50 +115,32 @@ class CalculateAgriculturalHolidayEntitlementTest < ActionDispatch::IntegrationT
       add_response "different-number-of-days"
     end
 
-    should "be able to enter the number of days I've worked" do
-      assert_current_node :how_many_total_days?
+    should "be asked when I'm taking holidays" do
+      assert_current_node :what_date_does_holiday_start?
     end
 
-    context "100 days worked" do
+    context "My holiday starts on august 1" do
       setup do
-        add_response "100"
+        # Fix today's date
+        Date.stubs(:today).returns Date.civil(2012, 6, 17)
+        add_response "2012-08-01"
       end
 
-      should "be asked when my holiday starts" do
-        assert_current_node :what_date_does_holiday_start?
+      should "be asked if I worked for the same employer" do
+        assert_current_node :worked_for_same_employer?
       end
 
-      context "My holiday date is new year's day" do
+      should "have the number of weeks calculated" do
+        assert_state_variable :weeks_from_october_1, 43
+      end
+
+      context "worked for the same employer" do
         setup do
-          add_response "2012-01-01"
+          add_response "same-employer"
         end
 
-        should "be asked about my employer after holiday dates" do
-          assert_current_node :worked_for_same_employer?
-        end
-
-        context "Worked for the same employer" do
-          setup do
-            add_response "same-employer"
-          end
-
-          should "be finished" do
-            assert_current_node :done
-          end
-
-          should "be told my allowance" do
-            assert_state_variable :holiday_entitlement_days, 5
-          end
-        end
-
-        context "Worked for multiple employers" do
-          setup do
-            add_response "multiple-employers"
-          end
-
-          should "be asked how many weeks I've worked for this employer" do
-            assert_current_node :how_many_weeks_at_current_employer?
-          end
+        should "be asked how many days I've worked" do
+          assert_current_node :how_many_total_days?
         end
       end
     end
