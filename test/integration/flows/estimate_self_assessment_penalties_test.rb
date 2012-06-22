@@ -43,8 +43,8 @@ class EstimateSelfAssessmentPenaltiesTest < ActiveSupport::TestCase
           calc.expects(:paid_on_time?).returns(true)
         end
 
-        should "show result part two" do
-          assert_current_node :result2
+        should "show filed and paid on time" do
+          assert_current_node :filed_and_paid_on_time
         end
       end
 
@@ -68,10 +68,26 @@ class EstimateSelfAssessmentPenaltiesTest < ActiveSupport::TestCase
         context "bill entered" do
           setup do
             add_response "12.50"
+            calc = mock()
+            SmartAnswer::Calculators::SelfAssessmentPenalties.expects(:new).
+                with(
+                  submission_method: "online",
+                  filing_date: "2012-01-01",
+                  payment_date: "2012-03-01",
+                  estimated_bill: 12.5
+            ).returns(calc)
+            calc.expects(:late_filing_penalty).returns(100)
+            calc.expects(:total_owed).returns(200)
+            calc.expects(:interest).returns(12.30)
+            calc.expects(:late_payment_penalty).returns(100)
           end
 
           should "show results" do
-            assert_current_node :result1
+            assert_current_node :late
+            assert_state_variable :late_filing_penalty, "100"
+            assert_state_variable :total_owed, "200"
+            assert_state_variable :interest, "12.30"
+            assert_state_variable :late_payment_penalty, "100"
           end
         end
 
