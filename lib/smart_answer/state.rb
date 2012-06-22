@@ -23,5 +23,14 @@ module SmartAnswer
     def save_input_as(name)
       __send__ "#{name}=", responses.last
     end
+
+    # TODO: handle this somewhere better
+    def money_format(value)
+      if value % 10 == 0
+        value.to_i.to_s
+      else
+        "%0.2f" % value
+      end
+    end
   end
 end

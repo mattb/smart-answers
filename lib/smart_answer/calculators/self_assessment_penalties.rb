@@ -1,6 +1,7 @@
+require "ostruct"
 
 module SmartAnswer::Calculators
-  class SelfAssessmentPenalties
+  class SelfAssessmentPenalties < OpenStruct
 
   end
 end
