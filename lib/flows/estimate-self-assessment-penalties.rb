@@ -2,6 +2,15 @@ status :draft
 
 satisfies_need "B692"
 
+CALCULATOR_DATES = {
+  :online_filing_deadline => Date.new(2012, 1, 31),
+  :offline_filing_deadline => Date.new(2011, 10, 31),
+  :payment_deadline => Date.new(2012, 1, 31),
+  :penalty1date => Date.new(2012, 3, 2),
+  :penalty2date => Date.new(2012, 8, 2),
+  :penalty3date => Date.new(2013, 2, 2)
+}
+
 multiple_choice :how_submitted? do
   option :online => :when_submitted?
   option :paper => :when_submitted?
@@ -22,7 +31,8 @@ date_question :when_paid? do
     calculator = Calculators::SelfAssessmentPenalties.new(
       :submission_method => submission_method,
       :filing_date => filing_date,
-      :payment_date => response
+      :payment_date => response,
+      :dates => CALCULATOR_DATES
     )
     if calculator.paid_on_time?
       :filed_and_paid_on_time
@@ -40,7 +50,8 @@ money_question :how_much_tax? do
       :submission_method => submission_method,
       :filing_date => filing_date,
       :payment_date => payment_date,
-      :estimated_bill => responses.last
+      :estimated_bill => responses.last,
+      :dates => CALCULATOR_DATES
     )
   end
 

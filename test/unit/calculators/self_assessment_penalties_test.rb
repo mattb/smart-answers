@@ -1,11 +1,21 @@
 require_relative "../../test_helper"
 
+CALCULATOR_DATES = {
+  :online_filing_deadline => Date.new(2012, 1, 31),
+  :offline_filing_deadline => Date.new(2011, 10, 31),
+  :payment_deadline => Date.new(2012, 1, 31),
+  :penalty1date => Date.new(2012, 3, 2),
+  :penalty2date => Date.new(2012, 8, 2),
+  :penalty3date => Date.new(2013, 2, 2)
+}
+
 module SmartAnswer::Calculators
   class SelfAssessmentPenaltiesTest < ActiveSupport::TestCase
     def setup
       @calculator = SelfAssessmentPenalties.new(
         submission_method: "online", filing_date: "2012-01-10",
-        payment_date: "2012-03-10", estimated_bill: 1200.5
+        payment_date: "2012-03-10", estimated_bill: 1200.5,
+        dates: CALCULATOR_DATES
       )
     end
 
@@ -72,6 +82,14 @@ module SmartAnswer::Calculators
           assert_equal 120.05, @calculator.late_payment_penalty
           @calculator.payment_date = "2013-02-02"
           assert_equal 180.08, @calculator.late_payment_penalty
+        end
+
+        should "calculate total owed" do
+          assert_equal 1264.38, @calculator.total_owed
+          @calculator.payment_date = "2012-08-03"
+          assert_equal 1339.42, @calculator.total_owed
+          @calculator.payment_date = "2013-02-02"
+          assert_equal 1419.17, @calculator.total_owed
         end
       end
     end
