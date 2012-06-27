@@ -56,19 +56,29 @@ money_question :how_much_tax? do
   end
 
   calculate :late_filing_penalty do
-    money_format(calculator.late_filing_penalty)
+    calculator.late_filing_penalty
   end
 
   calculate :total_owed do
-    money_format(calculator.total_owed)
+    calculator.total_owed
   end
 
   calculate :interest do
-    money_format(calculator.interest)
+    calculator.interest
   end
 
   calculate :late_payment_penalty do
-    money_format(calculator.late_payment_penalty)
+    calculator.late_payment_penalty
+  end
+
+  calculate :result_parts do
+    phrase_list = PhraseList.new(calculator.late_filing_penalty == 0 ? :result_part1_no_penalty : :result_part1_penalty)
+    if calculator.late_payment_penalty == 0
+      phrase_list << :result_part2_no_penalty
+    else
+      phrase_list << :result_part2_penalty
+    end
+    phrase_list
   end
 
   next_node :late

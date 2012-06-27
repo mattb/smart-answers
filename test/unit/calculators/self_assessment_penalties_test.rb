@@ -14,7 +14,7 @@ module SmartAnswer::Calculators
     def setup
       @calculator = SelfAssessmentPenalties.new(
         submission_method: "online", filing_date: "2012-01-10",
-        payment_date: "2012-03-10", estimated_bill: 1200.5,
+        payment_date: "2012-03-10", estimated_bill: SmartAnswer::Money.new(1200.5),
         dates: CALCULATOR_DATES
       )
     end
@@ -49,13 +49,13 @@ module SmartAnswer::Calculators
           @calculator.filing_date = "2012-09-06"
           assert_equal 1300, @calculator.late_filing_penalty
           # band four (5% estimated bill larger than £300)
-          @calculator.estimated_bill = 11000
+          @calculator.estimated_bill = SmartAnswer::Money.new(11000)
           assert_equal 1550, @calculator.late_filing_penalty
           # band five
           @calculator.filing_date = "2013-02-02"
           assert_equal 1600, @calculator.late_filing_penalty
           # band five (5% estimated bill larger than £600)
-          @calculator.estimated_bill = 13000
+          @calculator.estimated_bill = SmartAnswer::Money.new(13000)
           assert_equal 1650, @calculator.late_filing_penalty
         end
 
@@ -66,7 +66,7 @@ module SmartAnswer::Calculators
           assert_equal 3.16, @calculator.interest
           # should calculate PenaltyInterest1
           @calculator.payment_date = "2012-04-02"
-          @calculator.estimated_bill = 20000
+          @calculator.estimated_bill = SmartAnswer::Money.new(20000)
           assert_equal 102, @calculator.interest
           # should calculate PenaltyInterest2
           @calculator.payment_date = "2012-08-20"

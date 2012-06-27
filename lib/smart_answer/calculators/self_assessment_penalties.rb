@@ -16,16 +16,17 @@ module SmartAnswer::Calculators
 
     def late_filing_penalty
       if overdue_filing_days <= 0
-        0
+        result = 0
       elsif overdue_filing_days <= 90
-        100
+        result = 100
       elsif overdue_filing_days <= 179
-        (overdue_filing_days - 90) * 10 + 100
+        result = (overdue_filing_days - 90) * 10 + 100
       elsif overdue_filing_days <= 364
-        1000 + [300, estimated_bill * 0.05].max
+        result = 1000 + [300, estimated_bill.value * 0.05].max
       else
-        1000 + [600, estimated_bill * 0.05].max
+        result = 1000 + [600, estimated_bill.value * 0.05].max
       end
+      SmartAnswer::Money.new(result)
     end
 
     def interest
@@ -33,23 +34,23 @@ module SmartAnswer::Calculators
         0
       else
         penalty_interest = penalty_interest(penalty1date) + penalty_interest(penalty2date) + penalty_interest(penalty3date)
-        (calculate_interest(estimated_bill, overdue_payment_days) + penalty_interest).round(2)
+        SmartAnswer::Money.new((calculate_interest(estimated_bill.value, overdue_payment_days) + penalty_interest).round(2))
       end
     end
 
     def total_owed
-      (estimated_bill + interest + late_payment_penalty).round(2)
+      SmartAnswer::Money.new((estimated_bill.value + interest.value + late_payment_penalty.value).round(2))
     end
 
     def late_payment_penalty
       if overdue_payment_days <= 30
         0
       elsif overdue_payment_days <= 179
-        late_payment_penalty_part.round(2)
+        SmartAnswer::Money.new(late_payment_penalty_part.round(2))
       elsif overdue_payment_days <= 364
-        (late_payment_penalty_part * 2).round(2)
+        SmartAnswer::Money.new((late_payment_penalty_part * 2).round(2))
       else
-        (late_payment_penalty_part * 3).round(2)
+        SmartAnswer::Money.new((late_payment_penalty_part * 3).round(2))
       end
     end
 
@@ -71,7 +72,7 @@ module SmartAnswer::Calculators
     end
 
     def late_payment_penalty_part
-      0.05 * estimated_bill
+      0.05 * estimated_bill.value
     end
 
     def filing_deadline
