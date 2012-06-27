@@ -2,7 +2,7 @@ status :draft
 
 satisfies_need "B692"
 
-CALCULATOR_DATES = {
+calculator_dates = {
   :online_filing_deadline => Date.new(2012, 1, 31),
   :offline_filing_deadline => Date.new(2011, 10, 31),
   :payment_deadline => Date.new(2012, 1, 31),
@@ -32,7 +32,7 @@ date_question :when_paid? do
       :submission_method => submission_method,
       :filing_date => filing_date,
       :payment_date => response,
-      :dates => CALCULATOR_DATES
+      :dates => calculator_dates
     )
     if calculator.paid_on_time?
       :filed_and_paid_on_time
@@ -51,7 +51,7 @@ money_question :how_much_tax? do
       :filing_date => filing_date,
       :payment_date => payment_date,
       :estimated_bill => responses.last,
-      :dates => CALCULATOR_DATES
+      :dates => calculator_dates
     )
   end
 
