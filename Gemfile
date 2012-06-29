@@ -21,7 +21,7 @@ gem 'plek', '~> 0.1'
 gem 'rummageable'
 gem 'aws-ses', :require => 'aws/ses'
 gem 'exception_notification'
-gem 'gds-api-adapters', '~> 0.0.30'
+gem 'gds-api-adapters', '~> 0.1.0'
 gem 'htmlentities', '~> 4'
 
 group :development do
@@ -31,7 +31,7 @@ end
 if ENV['SLIMMER_DEV']
   gem 'slimmer', :path => '../slimmer'
 else
-  gem 'slimmer', '~> 1.1.39'
+  gem 'slimmer', '~> 1.1.42'
 end
 
 if ENV['GOVSPEAK_DEV']

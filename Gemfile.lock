@@ -73,7 +73,7 @@ GEM
       factory_girl (~> 2.3.0)
       railties (>= 3.0.0)
     ffi (1.0.11)
-    gds-api-adapters (0.0.44)
+    gds-api-adapters (0.1.0)
       lrucache (~> 0.1.1)
       null_logger
       plek
@@ -173,8 +173,8 @@ GEM
     simplecov (0.4.2)
       simplecov-html (~> 0.4.4)
     simplecov-html (0.4.5)
-    slimmer (1.1.39)
-      gds-api-adapters (~> 0.0.33)
+    slimmer (1.1.42)
+      gds-api-adapters (>= 0.0.33, < 0.2.0)
       json
       nokogiri (~> 1.5.0)
       null_logger
@@ -213,7 +213,7 @@ DEPENDENCIES
   coffee-rails (~> 3.1.0)
   exception_notification
   factory_girl_rails
-  gds-api-adapters (~> 0.0.30)
+  gds-api-adapters (~> 0.1.0)
   gds-warmup-controller
   govspeak (~> 0.8.15)
   htmlentities (~> 4)
@@ -232,7 +232,7 @@ DEPENDENCIES
   selenium-webdriver
   shoulda (~> 2.11.3)
   simplecov (= 0.4.2)
-  slimmer (~> 1.1.39)
+  slimmer (~> 1.1.42)
   therubyracer (~> 0.9.4)
   uglifier
   webmock
